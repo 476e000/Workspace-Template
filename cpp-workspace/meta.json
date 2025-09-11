@@ -10,6 +10,10 @@
 		"qt": {
 			"alias": [ "gui-qt" ],
 			"path": "qt"
+		},
+		"qt5": {
+			"alias": [ "gui-qt5" ],
+			"path": "qt5"
 		}
 	},
 	"default": "default"
