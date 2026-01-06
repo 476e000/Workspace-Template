@@ -4,6 +4,7 @@ from shutil import copy2 as copy_file
 import json
 
 from .exceptions import *
+from .template import Template
 
 from typing import Any
 
@@ -49,18 +50,14 @@ class Variant:
     @property
     def files(self): return (p for p in self._path.rglob("*") if p.is_file())
 
-class Workspace:
-    TEMPLATE_ROOT: Path = Path(__file__).parent.parent
-
-    def __init__(self, path: Path) -> None:
-        self._path = Path(path)
-        self._name = self._path.name.split("-")[0]
-        self._title: str = ""
-        self._description: str = ""
+class Workspace(Template):
+    def __init__(self, name: str, path: Path) -> None:
+        super().__init__(name=name, path=path, description="")
         self._default: str = ""
         self._variants: list[Variant] = []
 
         self._get_workspace_info()
+
 
     def _get_workspace_info(self):
         data: dict[str, Any] = {}
@@ -84,11 +81,13 @@ class Workspace:
         if not self._default:
             return
         try:
-            self._get_variant(self._default)
+            self.get_variant(self._default)
         except RuntimeError:
             raise InvalidConfiguration(f"{self._name}: invalid default variant")
 
-    def _get_variant(self, name: str):
+    def get_variant(self, name: str | None):
+        if name is None:
+            name = self.default
         for v in self._variants:
             if name == v.name or name in v.alias:
                 return v
@@ -97,51 +96,54 @@ class Workspace:
     @property
     def variants(self): return self._variants
     @property
-    def title(self): return self._title
-    @property
-    def description(self): return self._description
+    def default(self): return self._default
 
-    def _get_files_impl(self, variant: str | None = None, level: int = 0):
+    def _get_files_impl(self, variant: str | Variant | None = None, level: int = 0):
         if not variant:
             variant = self._default;
         if not variant:
             raise RuntimeError(f"{self._name}: template has no default variant")
 
-        v = self._get_variant(variant)
-        file_record: dict[Path, Path] = {}
-        for f in v.files:
-            file_record[f.relative_to(v.path)] = f
+        if not isinstance(variant, Variant):
+            variant = self.get_variant(variant)
 
-        if not v.inherits or level >= 5:
-            return (v, file_record)
+        file_record: dict[Path, Path] = {}
+        for f in variant.files:
+            file_record[f.relative_to(variant.path)] = f
+
+        if not variant.inherits or level >= 5:
+            return (variant, file_record)
 
         try:
-            parent, files = self._get_files_impl(v.inherits, level + 1)
+            parent, files = self._get_files_impl(variant.inherits, level + 1)
             for _, f in files.items():
                 rel_path = f.relative_to(parent.path)
                 if not rel_path in file_record:
                     file_record[rel_path] = f
         except RuntimeError:
             pass
-        return (v, file_record)
+        return (variant, file_record)
 
-    def get_files(self, variant: str | None = None):
+    def get_files(self, variant: str | Variant | None = None):
         _, files = self._get_files_impl(variant)
-        return files
+        return (files, max([len(str(f)) for f in files]))
 
-    def create_workspace(self, path: Path | str, variant: str | None = None, *, verbose: bool = False):
+    def create_workspace(self, path: Path | str, variant: str | Variant | None = None, *, verbose: bool = False, dry_run: bool = False):
         if not isinstance(path, Path):
             path = Path(path)
         if path.exists() and not path.is_dir():
             raise RuntimeError(f"{self._name}: failed to create workspace, '{path}' is not a directory")
 
-        path.mkdir(parents=True, exist_ok=True)
-        for rel_path, f in self.get_files(variant).items():
+        verbose = verbose or dry_run
+
+        files, max_len = self.get_files(variant)
+        for rel_path, f in files.items():
             target = path / rel_path
-            (path / rel_path.parent).mkdir(parents=True, exist_ok=True)
-            copy_file(f, target)
+            if not dry_run:
+                (path / rel_path.parent).mkdir(parents=True, exist_ok=True)
+                copy_file(f, target)
             if verbose:
-                print(f"{f} -> {target}")
+                print(f"  {str(rel_path):<{max_len}} -> {target}")
 
 
 
