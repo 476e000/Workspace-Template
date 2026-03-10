@@ -9,15 +9,21 @@ endif()
 
 project("#cpp#" VERSION 1.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Qt project required settings
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
+
+set(QT5_I18N_TRANSLATED_LANGUAGES zh_CN)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+	set(DISABLE_CONSOLE ON)
+endif()
+
+qt5_add_resources(QRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/resources.qrc")
 
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 include_directories(include)

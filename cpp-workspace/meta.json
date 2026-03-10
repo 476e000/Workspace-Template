@@ -3,18 +3,27 @@
 	"title": "C++ Workspace Templates",
 	"description": "",
 	"variants": {
+		"base": { "path": "base" },
 		"default": {
 			"alias": [ "generic", "cmdline" ],
-			"path": "default"
+			"path": "default",
+			"inherits": "base"
+		},
+		"lib": {
+			"path": "lib",
+			"inherits": "base"
 		},
 		"qt": {
-			"alias": [ "gui-qt" ],
-			"path": "qt"
+			"alias": [ "gui-qt", "gui-qt6", "qt6"  ],
+			"path": "qt",
+			"inherits": "default"
 		},
 		"qt5": {
 			"alias": [ "gui-qt5" ],
-			"path": "qt5"
+			"path": "qt5",
+			"inherits": "base"
 		}
 	},
+	"project_file_patterns": [ "CMakeLists.txt", ".h", ".cpp" ],
 	"default": "default"
 }
