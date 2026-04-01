@@ -42,14 +42,14 @@ else()
 	)
 endif()
 
-if (WIN32 AND DISABLE_CONSOLE)
+if(WIN32)
 	# Disables console window on Windows
-	set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE ON)
+	set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE $<CONFIG:Release>)
 endif()
 
 
 # --- install rules --- #
-if (WIN32)
+if(WIN32)
 	install(TARGETS ${PROJECT_NAME}
 		BUNDLE  DESTINATION .
 		RUNTIME DESTINATION .

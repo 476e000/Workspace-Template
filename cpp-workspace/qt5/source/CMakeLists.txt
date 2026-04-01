@@ -37,9 +37,9 @@ qt5_create_translation(
 	OPTIONS ${QT5_LUPDATE_OPTIONS}
 )
 
-if (WIN32 AND DISABLE_CONSOLE)
+if(WIN32)
 	# Disables console window on Windows
-	set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE ON)
+	set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE $<CONFIG:Release>)
 endif()
 
 

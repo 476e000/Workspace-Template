@@ -29,10 +29,6 @@ else()
 	qt6_standard_project_setup()
 endif()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-	set(DISABLE_CONSOLE ON)
-endif()
-
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 include_directories(include)
 add_subdirectory(source)

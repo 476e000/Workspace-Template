@@ -19,10 +19,6 @@ find_package(Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 
 set(QT5_I18N_TRANSLATED_LANGUAGES zh_CN)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-	set(DISABLE_CONSOLE ON)
-endif()
-
 qt5_add_resources(QRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/resources.qrc")
 
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
