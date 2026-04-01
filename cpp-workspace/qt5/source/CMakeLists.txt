@@ -27,7 +27,7 @@ target_compile_definitions(
 set(QT5_LUPDATE_OPTIONS -no-obsolete)
 
 set(TS_FILES)
-foreach(lang IN LISTS QT6_I18N_TRANSLATED_LANGUAGES)
+foreach(lang IN LISTS QT5_I18N_TRANSLATED_LANGUAGES)
 	list(APPEND TS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/translations/${PROJECT_NAME}_${lang}.ts)
 endforeach()
 qt5_create_translation(
