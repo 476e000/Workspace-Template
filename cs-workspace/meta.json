@@ -1,0 +1,14 @@
+{
+	"$schema": "../schemas/template.json",
+	"title": "C# Workspace Templates",
+	"description": ".NET SDK style project template",
+	"variants": {
+		"base": { "path": "base" },
+		"net472": {
+			"path": "net472",
+			"inherits": "base"
+		}
+	},
+	"project_file_patterns": [ ".cs", ".csproj", ".props", ".slnx" ],
+	"default": "net472"
+}

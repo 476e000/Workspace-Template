@@ -1,0 +1,32 @@
+<Project>
+  <!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
+  <PropertyGroup>
+
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>preview</LangVersion>
+
+    <BaseOutputPath>$(MSBuildThisFileDirectory)Build\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)Build\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+
+    <ProjectName>#cs#</ProjectName>
+    <ProjectVersionMajor>0</ProjectVersionMajor>
+    <ProjectVersionMinor>1</ProjectVersionMinor>
+    <ProjectVersionPatch>0</ProjectVersionPatch>
+    <ProjectVersion>$(ProjectVersionMajor).$(ProjectVersionMinor).$(ProjectVersionPatch)</ProjectVersion>
+
+    <Version>$(ProjectVersion)</Version>
+    <AssemblyVersion>$(ProjectVersion)</AssemblyVersion>
+    <FileVersion>$(ProjectVersion)</FileVersion>
+    <InformationalVersion>$(ProjectVersion)</InformationalVersion>
+
+    <Company></Company>
+    <Product></Product>
+    <Description></Description>
+    <PackageProjectUrl></PackageProjectUrl>
+    <Copyright></Copyright>
+
+    <ImplicitUsings>false</ImplicitUsings>
+    <Nullable>disable</Nullable>
+
+  </PropertyGroup>
+</Project>
