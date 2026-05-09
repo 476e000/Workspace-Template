@@ -7,6 +7,11 @@
 		"net472": {
 			"path": "net472",
 			"inherits": "base"
+		},
+		"net472winforms": {
+			"alias": [ "winforms" ],
+			"path": "net472winforms",
+			"inherits": "net472"
 		}
 	},
 	"project_file_patterns": [ ".cs", ".csproj", ".props", ".slnx" ],
